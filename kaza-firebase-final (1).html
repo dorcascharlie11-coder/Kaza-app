@@ -1,0 +1,2155 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>KAZA – Trouvez votre chez-vous</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1a5c2a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KAZA">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+/* ════════════════════════════════════════
+   RESET & ROOT
+════════════════════════════════════════ */
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --g1:#1a5c2a;    /* vert foncé principal */
+  --g2:#2d8a45;    /* vert moyen */
+  --g3:#3db35a;    /* vert clair */
+  --gbg:#f0f7f2;   /* fond vert très clair */
+  --glt:#e8f5e9;   /* vert léger */
+  --y1:#f5c518;    /* jaune principal */
+  --y2:#e6b800;    /* jaune foncé */
+  --ybg:#fff8e1;   /* fond jaune */
+  --wh:#ffffff;
+  --bg:#f4f6f4;
+  --bd:#dde8de;    /* bordure */
+  --gr:#8a9e8c;    /* gris texte */
+  --grd:#4a5c4b;   /* gris foncé */
+  --tx:#1a2e1f;    /* texte principal */
+  --red:#e53935;
+  --r:12px;        /* border-radius */
+  --rl:18px;
+  --rxl:24px;
+  --sh:0 2px 16px rgba(26,92,42,0.10);
+  --sh2:0 6px 28px rgba(26,92,42,0.16);
+}
+html,body{
+  height:100%;overflow:hidden;
+  font-family:'Poppins',sans-serif;
+  background:#1a5c2a;
+}
+#app{
+  max-width:430px;margin:0 auto;
+  background:var(--wh);
+  height:100vh;height:100dvh;
+  display:flex;flex-direction:column;
+  overflow:hidden;position:relative;
+  box-shadow:0 0 60px rgba(0,0,0,0.3);
+}
+
+/* ════════════════════════════════════════
+   SCREENS
+════════════════════════════════════════ */
+.screen{display:none;flex-direction:column;height:100%;overflow:hidden}
+.screen.active{display:flex}
+
+/* ════════════════════════════════════════
+   SPLASH
+════════════════════════════════════════ */
+#sc-splash{
+  background:linear-gradient(160deg,#0e3d1c 0%,#1a5c2a 45%,#2d8a45 100%);
+  align-items:center;justify-content:center;
+}
+.splash-wrap{text-align:center;animation:splashUp .8s cubic-bezier(.34,1.56,.64,1) .1s both}
+@keyframes splashUp{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+.splash-logo-box{
+  width:120px;height:120px;margin:0 auto 20px;
+  background:rgba(255,255,255,0.10);
+  border:2px solid rgba(255,255,255,0.18);
+  border-radius:32px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 12px 40px rgba(0,0,0,0.2);
+}
+.splash-logo-box i{font-size:58px;color:#fff}
+.splash-kaza{
+  font-size:3.2rem;font-weight:800;color:#fff;
+  letter-spacing:8px;line-height:1;
+}
+.splash-kaza span{color:var(--y1)}
+.splash-tag{
+  color:rgba(255,255,255,0.55);font-size:0.68rem;
+  letter-spacing:3px;margin-top:6px;text-transform:uppercase;
+}
+.splash-line{
+  width:60px;height:3px;
+  background:linear-gradient(90deg,var(--y1),transparent);
+  border-radius:2px;margin:28px auto 0;
+}
+.splash-loader{
+  display:flex;gap:7px;justify-content:center;margin-top:18px;
+}
+.splash-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:rgba(255,255,255,0.3);
+  animation:dotPulse 1.4s ease infinite;
+}
+.splash-dot:nth-child(2){animation-delay:.2s}
+.splash-dot:nth-child(3){animation-delay:.4s}
+@keyframes dotPulse{
+  0%,100%{transform:scale(1);background:rgba(255,255,255,0.3)}
+  50%{transform:scale(1.4);background:var(--y1)}
+}
+
+/* ════════════════════════════════════════
+   AUTH
+════════════════════════════════════════ */
+#sc-auth{overflow-y:auto}
+.auth-hero{
+  background:linear-gradient(145deg,#0e3d1c,#1a5c2a,#2d8a45);
+  padding:44px 24px 32px;text-align:center;flex-shrink:0;
+  position:relative;overflow:hidden;
+}
+.auth-hero::before{
+  content:'';position:absolute;top:-40px;right:-40px;
+  width:180px;height:180px;border-radius:50%;
+  background:rgba(255,255,255,0.04);
+}
+.auth-hero::after{
+  content:'';position:absolute;bottom:-60px;left:-30px;
+  width:200px;height:200px;border-radius:50%;
+  background:rgba(245,197,24,0.06);
+}
+.auth-icon-wrap{
+  width:68px;height:68px;margin:0 auto 14px;
+  background:rgba(255,255,255,0.13);
+  border:1.5px solid rgba(255,255,255,0.22);
+  border-radius:20px;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;z-index:1;
+}
+.auth-icon-wrap i{font-size:34px;color:#fff}
+.auth-brand{font-size:2rem;font-weight:800;color:#fff;letter-spacing:5px;position:relative;z-index:1}
+.auth-brand span{color:var(--y1)}
+.auth-sub{color:rgba(255,255,255,0.55);font-size:0.68rem;letter-spacing:2.5px;margin-top:3px;position:relative;z-index:1}
+
+.auth-tabs{
+  display:flex;background:#fff;
+  border-bottom:1.5px solid var(--bd);flex-shrink:0;
+}
+.auth-tab{
+  flex:1;padding:14px 8px;text-align:center;
+  font-size:0.84rem;font-weight:600;color:var(--gr);
+  cursor:pointer;border-bottom:3px solid transparent;
+  transition:all .2s;font-family:inherit;
+  background:none;border-top:none;border-left:none;border-right:none;
+}
+.auth-tab.active{color:var(--g1);border-bottom-color:var(--g1)}
+
+.auth-body{padding:22px 20px 50px;background:#fff}
+
+/* ════════════════════════════════════════
+   FORM ELEMENTS
+════════════════════════════════════════ */
+.row{display:flex;gap:10px}
+.fg{margin-bottom:14px;flex:1;min-width:0}
+.fg label{
+  display:block;font-size:0.71rem;font-weight:700;
+  color:var(--g1);margin-bottom:5px;letter-spacing:0.4px;
+  text-transform:uppercase;
+}
+.fg input,.fg select,.fg textarea{
+  width:100%;padding:11px 13px;
+  border:1.5px solid var(--bd);
+  border-radius:var(--r);
+  font-size:0.84rem;font-family:inherit;
+  background:var(--gbg);color:var(--tx);outline:none;
+  transition:border-color .2s,box-shadow .2s;
+  -webkit-appearance:none;appearance:none;
+}
+.fg input:focus,.fg select:focus,.fg textarea:focus{
+  border-color:var(--g1);
+  box-shadow:0 0 0 3px rgba(26,92,42,0.08);
+}
+.fg textarea{resize:none;height:88px;line-height:1.55}
+.fg input::placeholder,.fg textarea::placeholder{color:var(--gr);opacity:.7}
+
+.statut-row{display:flex;gap:10px;margin-bottom:14px}
+.statut-btn{
+  flex:1;padding:11px 8px;border-radius:var(--r);
+  border:2px solid var(--bd);background:var(--gbg);
+  font-size:0.8rem;font-weight:700;color:var(--g1);
+  cursor:pointer;text-align:center;transition:all .2s;
+  font-family:inherit;display:flex;align-items:center;
+  justify-content:center;gap:6px;
+}
+.statut-btn.active{
+  background:var(--g1);color:#fff;border-color:var(--g1);
+  box-shadow:0 3px 12px rgba(26,92,42,0.25);
+}
+.statut-btn i{font-size:1.1rem}
+
+/* BUTTONS */
+.btn{
+  width:100%;padding:13px;border:none;border-radius:var(--r);
+  font-size:0.91rem;font-weight:700;cursor:pointer;
+  font-family:inherit;letter-spacing:0.3px;
+  transition:all .18s;
+  display:flex;align-items:center;justify-content:center;gap:7px;
+}
+.btn-g{
+  background:linear-gradient(135deg,var(--g1),var(--g2));
+  color:#fff;box-shadow:0 4px 14px rgba(26,92,42,0.3);
+}
+.btn-g:active{transform:scale(.98);box-shadow:0 2px 8px rgba(26,92,42,0.2)}
+.btn-y{
+  background:var(--y1);color:var(--g1);
+  box-shadow:0 4px 14px rgba(245,197,24,0.35);
+}
+.btn-y:active{background:var(--y2)}
+.btn-out{background:var(--bg);color:var(--grd);border:1px solid var(--bd)}
+
+.auth-switch{text-align:center;margin-top:14px;font-size:0.75rem;color:var(--gr)}
+.auth-switch span{color:var(--g1);font-weight:700;cursor:pointer}
+
+/* ════════════════════════════════════════
+   HOME – TOP BAR
+════════════════════════════════════════ */
+.topbar{
+  background:linear-gradient(135deg,var(--g1),var(--g2));
+  padding:14px 15px 12px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
+}
+.topbar-logo{
+  font-size:1.5rem;font-weight:800;color:#fff;
+  letter-spacing:4px;
+}
+.topbar-logo span{color:var(--y1)}
+.topbar-right{display:flex;gap:7px;align-items:center}
+.ibtn{
+  background:rgba(255,255,255,0.15);border:none;
+  border-radius:9px;padding:7px 9px;color:#fff;
+  cursor:pointer;font-size:1.1rem;
+  display:flex;align-items:center;
+  transition:background .15s;
+}
+.ibtn:active{background:rgba(255,255,255,0.28)}
+.notif-dot{
+  position:relative;
+}
+.notif-dot::after{
+  content:'';position:absolute;top:4px;right:4px;
+  width:7px;height:7px;border-radius:50%;
+  background:var(--y1);border:1.5px solid var(--g1);
+}
+
+/* ════════════════════════════════════════
+   SIDEBAR
+════════════════════════════════════════ */
+.sb-overlay{
+  position:absolute;inset:0;
+  background:rgba(0,0,0,0.45);
+  z-index:100;display:none;
+  backdrop-filter:blur(2px);
+}
+.sb-overlay.open{display:block}
+.sidebar{
+  position:absolute;top:0;left:-280px;bottom:0;
+  width:280px;background:#fff;z-index:101;
+  transition:left .28s cubic-bezier(.4,0,.2,1);
+  box-shadow:8px 0 32px rgba(0,0,0,0.12);
+  border-radius:0 28px 28px 0;
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.sidebar.open{left:0}
+.sb-head{
+  background:linear-gradient(145deg,#0e3d1c,#1a5c2a);
+  padding:36px 20px 24px;position:relative;overflow:hidden;
+}
+.sb-head::after{
+  content:'';position:absolute;bottom:-30px;right:-30px;
+  width:130px;height:130px;border-radius:50%;
+  background:rgba(255,255,255,0.04);
+}
+.sb-avatar{
+  width:52px;height:52px;border-radius:14px;
+  background:rgba(255,255,255,0.15);
+  border:2px solid rgba(255,255,255,0.25);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:10px;
+}
+.sb-avatar i{font-size:26px;color:#fff}
+.sb-name{color:#fff;font-size:1rem;font-weight:700}
+.sb-type{
+  color:rgba(255,255,255,0.6);font-size:0.72rem;
+  margin-top:2px;display:flex;align-items:center;gap:4px;
+}
+.sb-type-badge{
+  background:var(--y1);color:var(--g1);
+  font-size:0.62rem;font-weight:700;
+  padding:1px 7px;border-radius:10px;
+}
+
+.sb-menu{padding:10px 0;flex:1;overflow-y:auto}
+.sb-item{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 20px;font-size:0.87rem;color:var(--tx);
+  cursor:pointer;transition:background .15s;font-weight:500;
+}
+.sb-item:hover,.sb-item:active{background:var(--glt);color:var(--g1)}
+.sb-item i{font-size:1.2rem;color:var(--g1);width:22px;flex-shrink:0}
+.sb-badge{
+  margin-left:auto;background:var(--y1);color:var(--g1);
+  font-size:0.63rem;font-weight:700;padding:2px 7px;border-radius:10px;
+}
+.sb-divider{height:1px;background:var(--bd);margin:5px 16px}
+.sb-foot{padding:10px 16px 24px}
+.sb-logout{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 14px;border-radius:var(--r);
+  background:#fff0f0;color:var(--red);
+  cursor:pointer;font-size:0.87rem;font-weight:600;
+  transition:background .15s;
+}
+.sb-logout i{font-size:1.1rem}
+
+/* ════════════════════════════════════════
+   SEARCH BAR
+════════════════════════════════════════ */
+#search-bar{
+  display:none;padding:8px 12px;background:#fff;
+  border-bottom:1px solid var(--bd);flex-shrink:0;
+}
+.search-inner{position:relative}
+.search-inner i{
+  position:absolute;left:11px;top:50%;transform:translateY(-50%);
+  color:var(--gr);font-size:1rem;
+}
+#search-input{
+  width:100%;padding:9px 12px 9px 34px;
+  border:1.5px solid var(--bd);border-radius:var(--r);
+  font-size:0.84rem;font-family:inherit;
+  background:var(--gbg);outline:none;color:var(--tx);
+}
+#search-input:focus{border-color:var(--g1)}
+
+/* ════════════════════════════════════════
+   FILTERS
+════════════════════════════════════════ */
+.filters{
+  background:#fff;padding:11px 13px 10px;
+  flex-shrink:0;border-bottom:1px solid var(--bd);
+}
+.f-lbl{
+  font-size:0.67rem;font-weight:700;color:var(--g1);
+  margin-bottom:7px;letter-spacing:0.6px;text-transform:uppercase;
+}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px}
+.chips::-webkit-scrollbar{display:none}
+.chip{
+  white-space:nowrap;padding:5px 14px;border-radius:20px;
+  border:1.5px solid var(--bd);font-size:0.71rem;font-weight:600;
+  background:var(--gbg);color:var(--g1);cursor:pointer;
+  transition:all .15s;flex-shrink:0;font-family:inherit;
+}
+.chip.active{
+  background:var(--g1);color:#fff;border-color:var(--g1);
+  box-shadow:0 2px 8px rgba(26,92,42,0.25);
+}
+.f-row2{display:flex;gap:7px;margin-top:8px}
+.fsel{
+  flex:1;padding:7px 9px;
+  border:1.5px solid var(--bd);border-radius:10px;
+  font-size:0.7rem;font-family:inherit;
+  background:var(--gbg);color:var(--g1);
+  font-weight:600;outline:none;
+  -webkit-appearance:none;appearance:none;cursor:pointer;
+}
+.fsel:focus{border-color:var(--g1)}
+
+/* ════════════════════════════════════════
+   LISTINGS
+════════════════════════════════════════ */
+.listings{
+  flex:1;overflow-y:auto;
+  padding:13px 12px 6px;
+  background:var(--bg);
+}
+.listings::-webkit-scrollbar{width:3px}
+.listings::-webkit-scrollbar-thumb{background:var(--bd);border-radius:2px}
+
+.sec-label{
+  font-size:0.78rem;font-weight:700;color:var(--tx);
+  margin-bottom:11px;display:flex;align-items:center;
+  justify-content:space-between;
+}
+.sec-count{
+  font-size:0.68rem;color:var(--gr);font-weight:500;
+  background:var(--gbg);padding:2px 9px;border-radius:10px;
+}
+
+/* CARD */
+.pcard{
+  background:#fff;border-radius:var(--rl);margin-bottom:14px;
+  overflow:hidden;box-shadow:var(--sh);
+  cursor:pointer;transition:transform .15s,box-shadow .15s;
+}
+.pcard:active{transform:scale(.985);box-shadow:var(--sh2)}
+.pcard-img{
+  height:180px;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#c8e6c9,#a5d6a7);
+  display:flex;align-items:center;justify-content:center;
+}
+.pcard-img-ph{font-size:3.8rem;color:rgba(26,92,42,0.2)}
+.pcard-img img{width:100%;height:100%;object-fit:cover}
+.v-badge{
+  position:absolute;top:10px;left:10px;
+  background:linear-gradient(135deg,var(--g1),var(--g2));
+  color:#fff;
+  font-size:0.62rem;font-weight:700;
+  padding:3px 10px;border-radius:20px;
+  display:flex;align-items:center;gap:4px;
+  box-shadow:0 2px 8px rgba(26,92,42,0.3);
+}
+.photo-ct{
+  position:absolute;bottom:10px;right:10px;
+  background:rgba(0,0,0,0.5);color:#fff;
+  font-size:0.62rem;padding:3px 8px;
+  border-radius:10px;display:flex;align-items:center;gap:4px;
+  backdrop-filter:blur(4px);
+}
+.fav-btn-card{
+  position:absolute;top:10px;right:10px;
+  background:rgba(255,255,255,0.9);border:none;
+  border-radius:50%;width:32px;height:32px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:1rem;color:var(--gr);
+  transition:all .15s;
+}
+.fav-btn-card.active{color:var(--red);background:#fff}
+.pcard-body{padding:12px 14px 14px}
+.pcard-price{font-size:1.08rem;font-weight:700;color:var(--g1)}
+.pcard-price span{font-size:0.68rem;font-weight:400;color:var(--gr)}
+.pcard-title{font-size:0.85rem;font-weight:600;color:var(--tx);margin:3px 0}
+.pcard-loc{
+  font-size:0.71rem;color:var(--gr);
+  display:flex;align-items:center;gap:4px;
+}
+.pcard-feats{display:flex;gap:12px;margin-top:9px;flex-wrap:wrap}
+.pf{font-size:0.7rem;color:var(--gr);display:flex;align-items:center;gap:3px}
+.pf i{color:var(--g1);font-size:0.9rem}
+
+/* EMPTY STATE */
+.empty-state{
+  text-align:center;padding:50px 30px;
+}
+.empty-icon{font-size:3rem;color:var(--bd);margin-bottom:12px}
+.empty-title{font-size:0.9rem;font-weight:600;color:var(--grd);margin-bottom:6px}
+.empty-sub{font-size:0.78rem;color:var(--gr)}
+
+/* ════════════════════════════════════════
+   BOTTOM NAV
+════════════════════════════════════════ */
+.bnav{
+  display:flex;background:#fff;
+  border-top:1px solid var(--bd);
+  padding:7px 0 max(6px,env(safe-area-inset-bottom));
+  flex-shrink:0;
+}
+.ni{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+  cursor:pointer;padding:2px 0;color:var(--gr);
+  transition:color .15s;font-size:0.59rem;font-weight:600;
+  font-family:inherit;background:none;border:none;
+}
+.ni.active{color:var(--g1)}
+.ni i{font-size:1.35rem}
+.ni-add i{
+  background:linear-gradient(135deg,var(--g1),var(--g2));
+  color:#fff;border-radius:14px;padding:8px;
+  font-size:1.15rem;
+  box-shadow:0 3px 12px rgba(26,92,42,0.3);
+}
+
+/* ════════════════════════════════════════
+   PAYMENT MODAL
+════════════════════════════════════════ */
+.m-overlay{
+  position:absolute;inset:0;
+  background:rgba(0,0,0,0.5);
+  z-index:200;display:none;
+  align-items:flex-end;justify-content:center;
+  backdrop-filter:blur(3px);
+}
+.m-overlay.open{display:flex}
+.m-sheet{
+  background:#fff;width:100%;
+  border-radius:var(--rxl) var(--rxl) 0 0;
+  padding:20px 20px max(32px,env(safe-area-inset-bottom));
+  animation:sheetUp .32s cubic-bezier(.34,1.2,.64,1);
+  max-height:90vh;overflow-y:auto;
+}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}
+.m-handle{width:38px;height:4px;background:#ddd;border-radius:2px;margin:0 auto 18px}
+.m-title{font-size:1rem;font-weight:700;color:var(--tx);margin-bottom:3px}
+.m-sub{font-size:0.76rem;color:var(--gr);margin-bottom:15px}
+.amount-box{
+  background:var(--ybg);border:1.5px solid var(--y1);
+  border-radius:var(--r);padding:12px 14px;
+  text-align:center;margin-bottom:15px;
+}
+.amount-lbl{font-size:0.7rem;color:var(--gr)}
+.amount-val{font-size:1.3rem;font-weight:800;color:var(--g1)}
+.amount-note{font-size:0.68rem;color:var(--gr);margin-top:2px}
+.pay-opts{display:flex;flex-direction:column;gap:9px;margin-bottom:16px}
+.pay-opt{
+  display:flex;align-items:center;gap:13px;
+  padding:13px 14px;
+  border:2px solid var(--bd);border-radius:var(--r);
+  cursor:pointer;transition:all .15s;background:var(--gbg);
+}
+.pay-opt.sel{border-color:var(--g1);background:var(--glt)}
+.pay-ico{
+  width:42px;height:42px;border-radius:11px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.68rem;font-weight:800;color:#fff;flex-shrink:0;
+}
+.p-airtel{background:#e53935}
+.p-moov{background:#1565c0}
+.p-eco{background:#2e7d32}
+.pay-name{font-size:0.88rem;font-weight:700;color:var(--tx)}
+.pay-num{font-size:0.7rem;color:var(--gr);margin-top:1px}
+.pay-radio{
+  margin-left:auto;width:18px;height:18px;border-radius:50%;
+  border:2px solid var(--bd);flex-shrink:0;transition:all .15s;
+}
+.pay-opt.sel .pay-radio{border-color:var(--g1);background:var(--g1)}
+
+/* ════════════════════════════════════════
+   DETAIL SCREEN
+════════════════════════════════════════ */
+#sc-detail{overflow:hidden}
+.dtopbar{
+  background:linear-gradient(135deg,var(--g1),var(--g2));
+  padding:13px 15px;
+  display:flex;align-items:center;gap:10px;
+  flex-shrink:0;
+}
+.back-btn{
+  background:rgba(255,255,255,0.18);border:none;
+  border-radius:9px;padding:7px 10px;color:#fff;
+  cursor:pointer;font-size:1rem;
+  display:flex;align-items:center;
+  transition:background .15s;
+}
+.back-btn:active{background:rgba(255,255,255,0.3)}
+.dtopbar-title{
+  color:#fff;font-size:0.97rem;font-weight:700;
+  flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.dtopbar-fav{
+  background:rgba(255,255,255,0.18);border:none;
+  border-radius:9px;padding:7px 9px;color:#fff;
+  cursor:pointer;font-size:1.1rem;
+  display:flex;align-items:center;
+}
+
+/* CAROUSEL */
+.carousel{
+  height:240px;position:relative;overflow:hidden;
+  flex-shrink:0;
+  background:linear-gradient(135deg,#c8e6c9,#81c784);
+  display:flex;align-items:center;justify-content:center;
+}
+.carousel-ph{font-size:5.5rem;color:rgba(26,92,42,0.18)}
+.carousel img{width:100%;height:100%;object-fit:cover}
+.d-v-badge{
+  position:absolute;top:12px;left:12px;
+  background:linear-gradient(135deg,var(--g1),var(--g2));
+  color:#fff;font-size:0.68rem;font-weight:700;
+  padding:4px 12px;border-radius:20px;
+  display:flex;align-items:center;gap:5px;
+  box-shadow:0 3px 12px rgba(26,92,42,0.3);
+}
+.carousel-nav{
+  position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
+  display:flex;gap:5px;
+}
+.cdot{
+  width:7px;height:7px;border-radius:50%;
+  background:rgba(255,255,255,0.5);transition:all .2s;
+}
+.cdot.active{background:#fff;width:20px;border-radius:4px}
+
+/* DETAIL BODY */
+.dbody{flex:1;overflow-y:auto;padding:18px 16px 20px}
+.dbody::-webkit-scrollbar{width:3px}
+.dbody::-webkit-scrollbar-thumb{background:var(--bd);border-radius:2px}
+.d-price{font-size:1.55rem;font-weight:800;color:var(--g1);line-height:1}
+.d-price span{font-size:0.73rem;font-weight:400;color:var(--gr)}
+.d-name{font-size:1rem;font-weight:600;color:var(--tx);margin:5px 0 3px}
+.d-loc{font-size:0.75rem;color:var(--gr);display:flex;align-items:center;gap:4px}
+.d-divider{height:1px;background:var(--bd);margin:16px 0}
+.dsec{margin-bottom:18px}
+.dsec-title{
+  font-size:0.72rem;font-weight:700;color:var(--g1);
+  text-transform:uppercase;letter-spacing:0.7px;
+  margin-bottom:11px;
+}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fi{
+  background:var(--gbg);border-radius:var(--r);
+  padding:11px 12px;display:flex;align-items:center;gap:9px;
+}
+.fi i{color:var(--g1);font-size:1.1rem;flex-shrink:0}
+.fi-lbl{font-size:0.67rem;color:var(--gr)}
+.fi-val{font-size:0.84rem;font-weight:700;color:var(--tx)}
+.d-desc{
+  font-size:0.8rem;color:var(--grd);
+  line-height:1.68;
+}
+
+/* CONTACT BOX */
+.cbox{
+  background:linear-gradient(135deg,#0e3d1c,#1a5c2a);
+  border-radius:var(--rl);padding:20px;text-align:center;
+  box-shadow:0 6px 24px rgba(26,92,42,0.25);
+}
+.cbox-icon{font-size:2.2rem;color:var(--y1);margin-bottom:9px}
+.cbox-title{color:#fff;font-size:0.95rem;font-weight:700;margin-bottom:5px}
+.cbox-sub{color:rgba(255,255,255,0.65);font-size:0.76rem;margin-bottom:15px;line-height:1.55}
+.unlock-btn{
+  background:var(--y1);color:var(--g1);border:none;
+  padding:12px 30px;border-radius:var(--r);
+  font-size:0.88rem;font-weight:700;cursor:pointer;
+  font-family:inherit;transition:all .15s;
+  display:inline-flex;align-items:center;gap:7px;
+  box-shadow:0 3px 14px rgba(245,197,24,0.4);
+}
+.unlock-btn:active{background:var(--y2);transform:scale(.97)}
+.cbox-unlocked{
+  background:rgba(255,255,255,0.1);border-radius:var(--r);
+  padding:14px;margin-top:12px;
+}
+.c-tel{
+  color:#fff;font-size:0.9rem;font-weight:600;
+  display:flex;align-items:center;gap:7px;justify-content:center;
+}
+.c-who{color:rgba(255,255,255,0.6);font-size:0.72rem;margin-top:4px;text-align:center}
+.c-actions{display:flex;gap:9px;margin-top:12px;justify-content:center}
+.c-act-btn{
+  background:rgba(255,255,255,0.15);color:#fff;border:none;
+  padding:9px 18px;border-radius:var(--r);
+  font-size:0.78rem;font-weight:600;cursor:pointer;
+  font-family:inherit;display:flex;align-items:center;gap:6px;
+}
+
+/* ════════════════════════════════════════
+   PUBLISH SCREEN
+════════════════════════════════════════ */
+#sc-publish{overflow:hidden}
+.pub-topbar{
+  background:linear-gradient(135deg,var(--g1),var(--g2));
+  padding:13px 15px;
+  display:flex;align-items:center;gap:10px;flex-shrink:0;
+}
+.pub-topbar-title{color:#fff;font-size:0.97rem;font-weight:700}
+.pub-body{flex:1;overflow-y:auto;padding:16px 16px 40px}
+.pub-body::-webkit-scrollbar{width:3px}
+
+/* UPLOAD ZONE */
+.upload-zone{
+  border:2px dashed var(--bd);border-radius:var(--rl);
+  padding:32px 20px;text-align:center;
+  background:var(--gbg);margin-bottom:14px;
+  cursor:pointer;transition:all .2s;
+}
+.upload-zone:active,.upload-zone.drag{border-color:var(--g1);background:var(--glt)}
+.uz-icon{font-size:2.5rem;color:var(--g1);margin-bottom:9px}
+.uz-title{font-size:0.88rem;font-weight:700;color:var(--g1);margin-bottom:3px}
+.uz-sub{font-size:0.72rem;color:var(--gr);line-height:1.5}
+.hidden-file{display:none}
+.thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.thumb{
+  width:76px;height:76px;border-radius:var(--r);
+  background:linear-gradient(135deg,#c8e6c9,#a5d6a7);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.6rem;color:rgba(26,92,42,0.4);
+  position:relative;overflow:hidden;flex-shrink:0;
+}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.thumb-del{
+  position:absolute;top:-2px;right:-2px;
+  background:var(--red);color:#fff;border-radius:50%;
+  width:20px;height:20px;font-size:0.68rem;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;border:2px solid #fff;
+  font-weight:700;
+}
+.pub-step{
+  background:var(--gbg);border-radius:var(--r);
+  padding:12px 14px;margin-bottom:14px;
+  border-left:3px solid var(--g1);
+}
+.pub-step-title{font-size:0.72rem;font-weight:700;color:var(--g1);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px}
+
+/* ════════════════════════════════════════
+   FAVORITES SCREEN
+════════════════════════════════════════ */
+#sc-favoris{overflow:hidden}
+.std-topbar{
+  background:linear-gradient(135deg,var(--g1),var(--g2));
+  padding:14px 15px 13px;
+  display:flex;align-items:center;gap:10px;flex-shrink:0;
+}
+.std-topbar-title{color:#fff;font-size:1.05rem;font-weight:700;flex:1}
+.std-body{flex:1;overflow-y:auto;padding:14px 12px;background:var(--bg)}
+
+/* ════════════════════════════════════════
+   PROFIL SCREEN
+════════════════════════════════════════ */
+#sc-profil{overflow:hidden}
+.profil-body{flex:1;overflow-y:auto}
+.profil-hero{
+  background:linear-gradient(145deg,#0e3d1c,#1a5c2a);
+  padding:32px 20px 24px;text-align:center;
+  position:relative;overflow:hidden;
+}
+.profil-hero::before{
+  content:'';position:absolute;top:-40px;right:-40px;
+  width:200px;height:200px;border-radius:50%;
+  background:rgba(255,255,255,0.03);
+}
+.p-avatar{
+  width:76px;height:76px;border-radius:50%;
+  background:rgba(255,255,255,0.15);
+  border:3px solid rgba(255,255,255,0.3);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 12px;position:relative;z-index:1;
+}
+.p-avatar i{font-size:36px;color:#fff}
+.p-name{color:#fff;font-size:1.1rem;font-weight:700;position:relative;z-index:1}
+.p-type{
+  color:rgba(255,255,255,0.65);font-size:0.73rem;
+  margin-top:3px;position:relative;z-index:1;
+}
+.p-badge{
+  display:inline-block;background:var(--y1);color:var(--g1);
+  font-size:0.63rem;font-weight:700;padding:2px 10px;
+  border-radius:12px;margin-top:6px;
+}
+
+.p-stats{
+  display:flex;margin:0 14px;gap:10px;
+  transform:translateY(-1px);margin-bottom:14px;
+}
+.pstat{
+  flex:1;background:#fff;border-radius:var(--r);
+  padding:13px 8px;text-align:center;
+  box-shadow:0 2px 12px rgba(0,0,0,0.07);
+}
+.pstat-val{font-size:1.4rem;font-weight:800;color:var(--g1)}
+.pstat-lbl{font-size:0.67rem;color:var(--gr);margin-top:1px}
+
+.p-sec{margin:0 14px 5px;font-size:0.67rem;font-weight:700;color:var(--g1);text-transform:uppercase;letter-spacing:0.7px}
+.p-items{margin:0 14px 16px}
+.p-item{
+  display:flex;align-items:center;gap:12px;
+  padding:13px 14px;background:#fff;
+  border-radius:var(--r);margin-bottom:6px;
+  cursor:pointer;transition:background .15s;
+}
+.p-item:active{background:var(--gbg)}
+.p-item-ico{
+  width:38px;height:38px;border-radius:11px;
+  background:var(--gbg);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.p-item-ico i{font-size:1.1rem;color:var(--g1)}
+.p-item-lbl{font-size:0.86rem;font-weight:600;color:var(--tx);flex:1}
+.p-item-sub{font-size:0.71rem;color:var(--gr)}
+.p-item i.ti-chevron-right{color:var(--bd);font-size:0.9rem}
+.p-danger .p-item-ico{background:#fdecea}
+.p-danger .p-item-ico i{color:var(--red)}
+.p-danger .p-item-lbl{color:var(--red)}
+
+/* ════════════════════════════════════════
+   TOAST
+════════════════════════════════════════ */
+#toast{
+  position:fixed;
+  bottom:90px;left:50%;transform:translateX(-50%) translateY(10px);
+  background:rgba(26,46,31,0.94);color:#fff;
+  padding:10px 20px;border-radius:20px;
+  font-size:0.8rem;font-weight:500;
+  opacity:0;pointer-events:none;
+  transition:all .3s;white-space:nowrap;z-index:999;
+  backdrop-filter:blur(6px);
+  display:flex;align-items:center;gap:7px;
+  max-width:320px;text-align:center;
+  font-family:'Poppins',sans-serif;
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ════════════════════════════════════════
+   FIREBASE NOTICE
+════════════════════════════════════════ */
+.fb-banner{
+  background:var(--ybg);border:1px solid var(--y1);
+  border-radius:var(--r);padding:10px 13px;
+  font-size:0.73rem;color:var(--grd);
+  margin-bottom:14px;display:flex;align-items:flex-start;gap:8px;
+}
+.fb-banner i{color:var(--y1);font-size:1rem;flex-shrink:0;margin-top:1px}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ═══════════════════════════════════
+     SPLASH SCREEN
+═══════════════════════════════════ -->
+<div class="screen active" id="sc-splash">
+  <div class="splash-wrap">
+    <div class="splash-logo-box">
+      <i class="ti ti-home-2"></i>
+    </div>
+    <div class="splash-kaza">K<span>A</span>ZA</div>
+    <div class="splash-tag">Trouvez votre chez-vous</div>
+    <div class="splash-line"></div>
+    <div class="splash-loader">
+      <div class="splash-dot"></div>
+      <div class="splash-dot"></div>
+      <div class="splash-dot"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     AUTH SCREEN
+═══════════════════════════════════ -->
+<div class="screen" id="sc-auth">
+  <div class="auth-hero">
+    <div class="auth-icon-wrap"><i class="ti ti-home-2"></i></div>
+    <div class="auth-brand">K<span>A</span>ZA</div>
+    <div class="auth-sub">Trouvez votre chez-vous · Gabon</div>
+  </div>
+
+  <div class="auth-tabs">
+    <button class="auth-tab active" id="tab-reg" onclick="switchTab('reg')">
+      <i class="ti ti-user-plus"></i> Inscription
+    </button>
+    <button class="auth-tab" id="tab-login" onclick="switchTab('login')">
+      <i class="ti ti-login"></i> Connexion
+    </button>
+  </div>
+
+  <!-- FORMULAIRE INSCRIPTION -->
+  <div class="auth-body" id="form-reg">
+    <div class="row">
+      <div class="fg">
+        <label>Prénom *</label>
+        <input type="text" id="r-prenom" placeholder="Jean">
+      </div>
+      <div class="fg">
+        <label>Nom *</label>
+        <input type="text" id="r-nom" placeholder="Ndong">
+      </div>
+    </div>
+    <div class="fg">
+      <label>Email *</label>
+      <input type="email" id="r-email" placeholder="jean@email.com">
+    </div>
+    <div class="fg">
+      <label>Téléphone *</label>
+      <input type="tel" id="r-tel" placeholder="+241 07 XX XX XX">
+    </div>
+    <div class="row">
+      <div class="fg">
+        <label>Date de naissance</label>
+        <input type="date" id="r-dob">
+      </div>
+      <div class="fg">
+        <label>Sexe</label>
+        <select id="r-sexe">
+          <option value="">Sélectionner</option>
+          <option value="homme">Homme</option>
+          <option value="femme">Femme</option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-bottom:14px">
+      <div style="font-size:.71rem;font-weight:700;color:var(--g1);margin-bottom:6px;letter-spacing:.4px;text-transform:uppercase">Statut *</div>
+      <div class="statut-row">
+        <button class="statut-btn active" id="btn-chercheur" onclick="setStatut('chercheur')">
+          <i class="ti ti-search"></i>Chercheur
+        </button>
+        <button class="statut-btn" id="btn-bailleur" onclick="setStatut('bailleur')">
+          <i class="ti ti-building-store"></i>Bailleur
+        </button>
+      </div>
+    </div>
+    <div class="fg">
+      <label>Mot de passe *</label>
+      <input type="password" id="r-pass" placeholder="Minimum 6 caractères">
+    </div>
+    <button class="btn btn-g" onclick="doRegister()">
+      <i class="ti ti-user-check"></i> Créer mon compte
+    </button>
+    <div class="auth-switch">Déjà inscrit ?
+      <span onclick="switchTab('login')">Se connecter →</span>
+    </div>
+  </div>
+
+  <!-- FORMULAIRE CONNEXION -->
+  <div class="auth-body" id="form-login" style="display:none">
+    <div class="fg">
+      <label>Email</label>
+      <input type="email" id="l-email" placeholder="jean@email.com">
+    </div>
+    <div class="fg">
+      <label>Mot de passe</label>
+      <input type="password" id="l-pass" placeholder="••••••••">
+    </div>
+    <div style="text-align:right;margin-bottom:16px">
+      <span style="font-size:.74rem;color:var(--g1);cursor:pointer;font-weight:600">
+        Mot de passe oublié ?
+      </span>
+    </div>
+    <button class="btn btn-g" onclick="doLogin()">
+      <i class="ti ti-login"></i> Se connecter
+    </button>
+    <div class="auth-switch">Pas encore de compte ?
+      <span onclick="switchTab('reg')">S'inscrire →</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     HOME SCREEN
+═══════════════════════════════════ -->
+<div class="screen" id="sc-home">
+
+  <!-- SIDEBAR -->
+  <div class="sb-overlay" id="sb-overlay" onclick="closeSB()"></div>
+  <div class="sidebar" id="sidebar">
+    <div class="sb-head">
+      <div class="sb-avatar"><i class="ti ti-user"></i></div>
+      <div class="sb-name" id="sb-name">Jean Ndong</div>
+      <div class="sb-type">
+        <i class="ti ti-circle-check" style="color:var(--y1)"></i>
+        <span id="sb-type">Chercheur</span>
+        <span class="sb-type-badge" id="sb-badge-type">KAZA</span>
+      </div>
+    </div>
+    <div class="sb-menu">
+      <div class="sb-item" onclick="closeSB()"><i class="ti ti-home-2"></i>Accueil</div>
+      <div class="sb-item" onclick="goPublish()"><i class="ti ti-plus-circle"></i>Publier une annonce</div>
+      <div class="sb-divider"></div>
+      <div class="sb-item" onclick="goScreen('favoris');closeSB()"><i class="ti ti-heart"></i>Mes favoris<span class="sb-badge" id="sb-fav-count">0</span></div>
+      <div class="sb-item"><i class="ti ti-file-description"></i>Mes annonces</div>
+      <div class="sb-item"><i class="ti ti-message-circle-2"></i>Messages</div>
+      <div class="sb-item"><i class="ti ti-receipt-2"></i>Historique paiements</div>
+      <div class="sb-divider"></div>
+      <div class="sb-item" onclick="goScreen('profil');closeSB()"><i class="ti ti-user-circle"></i>Mon profil</div>
+      <div class="sb-item"><i class="ti ti-settings"></i>Paramètres</div>
+      <div class="sb-item"><i class="ti ti-info-circle"></i>À propos de KAZA</div>
+      <div class="sb-item"><i class="ti ti-headset"></i>Aide & Support</div>
+    </div>
+    <div class="sb-foot">
+      <div class="sb-logout" onclick="doLogout()">
+        <i class="ti ti-logout"></i>Déconnexion
+      </div>
+    </div>
+  </div>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <button class="ibtn" onclick="openSB()"><i class="ti ti-menu-2"></i></button>
+    <div class="topbar-logo">K<span>A</span>ZA</div>
+    <div class="topbar-right">
+      <button class="ibtn notif-dot"><i class="ti ti-bell"></i></button>
+      <button class="ibtn" onclick="toggleSearch()"><i class="ti ti-search"></i></button>
+    </div>
+  </div>
+
+  <!-- SEARCH BAR -->
+  <div id="search-bar">
+    <div class="search-inner">
+      <i class="ti ti-search"></i>
+      <input id="search-input" type="text"
+        placeholder="Rechercher un bien, quartier..."
+        oninput="searchProps(this.value)">
+    </div>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="filters">
+    <div class="f-lbl">📍 Commune</div>
+    <div class="chips" id="commune-chips">
+      <button class="chip active" onclick="fCommune(this,'')">Toutes</button>
+      <button class="chip" onclick="fCommune(this,'Libreville')">Libreville</button>
+      <button class="chip" onclick="fCommune(this,'Owendo')">Owendo</button>
+      <button class="chip" onclick="fCommune(this,'Akanda')">Akanda</button>
+      <button class="chip" onclick="fCommune(this,'Ntoum')">Ntoum</button>
+    </div>
+    <div class="f-row2">
+      <select class="fsel" id="f-quartier" onchange="applyFilters()">
+        <option value="">Quartier</option>
+        <option>Montagne Sainte</option>
+        <option>Lalala</option>
+        <option>Glass</option>
+        <option>Nzeng-Ayong</option>
+        <option>PK8</option>
+        <option>Bikélé</option>
+        <option>Angondjé</option>
+        <option>Bord de mer</option>
+        <option>Centre</option>
+        <option>Louis</option>
+        <option>Okala</option>
+        <option>Plein Ciel</option>
+      </select>
+      <select class="fsel" id="f-chambres" onchange="applyFilters()">
+        <option value="">Chambres</option>
+        <option value="1">Studio/1</option>
+        <option value="2">2 ch.</option>
+        <option value="3">3 ch.</option>
+        <option value="4">4+ ch.</option>
+      </select>
+      <select class="fsel" id="f-type" onchange="applyFilters()">
+        <option value="">Type</option>
+        <option>Appartement</option>
+        <option>Villa</option>
+        <option>Studio</option>
+        <option>Maison</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- LISTINGS -->
+  <div class="listings" id="listings">
+    <div class="sec-label">
+      🏡 Annonces récentes
+      <span class="sec-count" id="props-count">0 bien(s)</span>
+    </div>
+    <div id="props-list"></div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bnav">
+    <button class="ni active" id="ni-home" onclick="setNav('home')">
+      <i class="ti ti-home-2"></i>Accueil
+    </button>
+    <button class="ni" id="ni-search" onclick="setNav('search');toggleSearch()">
+      <i class="ti ti-search"></i>Chercher
+    </button>
+    <button class="ni ni-add" onclick="goPublish()">
+      <i class="ti ti-plus"></i>Publier
+    </button>
+    <button class="ni" id="ni-favoris" onclick="setNav('favoris');goScreen('favoris')">
+      <i class="ti ti-heart"></i>Favoris
+    </button>
+    <button class="ni" id="ni-profil" onclick="setNav('profil');goScreen('profil')">
+      <i class="ti ti-user-circle"></i>Profil
+    </button>
+  </div>
+
+  <!-- MODAL PAIEMENT (HOME) -->
+  <div class="m-overlay" id="pay-modal">
+    <div class="m-sheet">
+      <div class="m-handle"></div>
+      <div class="m-title">💳 Débloquer le contact</div>
+      <div class="m-sub">Choisissez votre moyen de paiement mobile</div>
+      <div class="amount-box">
+        <div class="amount-lbl">Montant à régler</div>
+        <div class="amount-val">500 FCFA</div>
+        <div class="amount-note">Paiement unique • Contact débloqué définitivement</div>
+      </div>
+      <div class="pay-opts">
+        <div class="pay-opt sel" onclick="selPay(this)">
+          <div class="pay-ico p-airtel">AM</div>
+          <div>
+            <div class="pay-name">Airtel Money</div>
+            <div class="pay-num">Entrez votre numéro Airtel</div>
+          </div>
+          <div class="pay-radio"></div>
+        </div>
+        <div class="pay-opt" onclick="selPay(this)">
+          <div class="pay-ico p-moov">MV</div>
+          <div>
+            <div class="pay-name">Moov Money</div>
+            <div class="pay-num">Entrez votre numéro Moov</div>
+          </div>
+          <div class="pay-radio"></div>
+        </div>
+        <div class="pay-opt" onclick="selPay(this)">
+          <div class="pay-ico p-eco">EC</div>
+          <div>
+            <div class="pay-name">Ecobank</div>
+            <div class="pay-num">Carte bancaire Ecobank</div>
+          </div>
+          <div class="pay-radio"></div>
+        </div>
+      </div>
+      <button class="btn btn-y" onclick="confirmPay()" style="margin-bottom:9px">
+        <i class="ti ti-lock-open"></i>Payer 500 FCFA
+      </button>
+      <button class="btn btn-out" onclick="closePayModal()">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     DETAIL SCREEN
+═══════════════════════════════════ -->
+<div class="screen" id="sc-detail">
+  <div class="dtopbar">
+    <button class="back-btn" onclick="goBack()"><i class="ti ti-arrow-left"></i></button>
+    <div class="dtopbar-title" id="d-topbar-title">Détail du bien</div>
+    <button class="dtopbar-fav" id="d-fav-btn" onclick="toggleFavDetail()">
+      <i class="ti ti-heart"></i>
+    </button>
+  </div>
+
+  <div class="carousel" id="d-carousel">
+    <div class="carousel-ph"><i class="ti ti-home-2"></i></div>
+    <div class="d-v-badge" id="d-vbadge"><i class="ti ti-circle-check"></i> Vérifié KAZA</div>
+    <div class="carousel-nav" id="c-nav">
+      <div class="cdot active"></div>
+      <div class="cdot"></div>
+      <div class="cdot"></div>
+    </div>
+  </div>
+
+  <div class="dbody">
+    <div class="d-price" id="d-price">— FCFA <span>/ mois</span></div>
+    <div class="d-name" id="d-name">—</div>
+    <div class="d-loc"><i class="ti ti-map-pin" style="color:var(--g1)"></i><span id="d-loc">—</span></div>
+    <div class="d-divider"></div>
+    <div class="dsec">
+      <div class="dsec-title">📐 Caractéristiques complètes</div>
+      <div class="fgrid" id="d-feats"></div>
+    </div>
+    <div class="d-divider"></div>
+    <div class="dsec">
+      <div class="dsec-title">📝 Description</div>
+      <div class="d-desc" id="d-desc">—</div>
+    </div>
+    <div class="d-divider"></div>
+    <div id="d-contact"></div>
+  </div>
+
+  <!-- MODAL PAIEMENT (DETAIL) -->
+  <div class="m-overlay" id="pay-modal-d">
+    <div class="m-sheet">
+      <div class="m-handle"></div>
+      <div class="m-title">💳 Débloquer le contact</div>
+      <div class="m-sub">Ce bien est vérifié par KAZA. Accédez au contact du bailleur.</div>
+      <div class="amount-box">
+        <div class="amount-lbl">Montant à régler</div>
+        <div class="amount-val">500 FCFA</div>
+        <div class="amount-note">Paiement unique • Accès permanent à ce contact</div>
+      </div>
+      <div class="pay-opts">
+        <div class="pay-opt sel" onclick="selPay(this)">
+          <div class="pay-ico p-airtel">AM</div>
+          <div><div class="pay-name">Airtel Money</div><div class="pay-num">+241 07 XX XX XX</div></div>
+          <div class="pay-radio"></div>
+        </div>
+        <div class="pay-opt" onclick="selPay(this)">
+          <div class="pay-ico p-moov">MV</div>
+          <div><div class="pay-name">Moov Money</div><div class="pay-num">+241 05 XX XX XX</div></div>
+          <div class="pay-radio"></div>
+        </div>
+        <div class="pay-opt" onclick="selPay(this)">
+          <div class="pay-ico p-eco">EC</div>
+          <div><div class="pay-name">Ecobank</div><div class="pay-num">Carte bancaire</div></div>
+          <div class="pay-radio"></div>
+        </div>
+      </div>
+      <button class="btn btn-y" onclick="confirmPayDetail()" style="margin-bottom:9px">
+        <i class="ti ti-lock-open"></i>Payer 500 FCFA & Débloquer
+      </button>
+      <button class="btn btn-out" onclick="closePayDetail()">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PUBLISH SCREEN
+═══════════════════════════════════ -->
+<div class="screen" id="sc-publish">
+  <div class="pub-topbar">
+    <button class="back-btn" onclick="goBack()"><i class="ti ti-arrow-left"></i></button>
+    <div class="pub-topbar-title">📢 Publier une annonce</div>
+  </div>
+  <div class="pub-body">
+    <div class="fb-banner">
+      <i class="ti ti-info-circle"></i>
+      <div>Votre annonce sera examinée par l'équipe KAZA. Les biens vérifiés obtiennent 3× plus de contacts.</div>
+    </div>
+
+    <!-- PHOTOS -->
+    <div class="pub-step">
+      <div class="pub-step-title">📷 Photos du bien</div>
+      <div class="upload-zone"
+        onclick="document.getElementById('file-input').click()"
+        ondrop="handleDrop(event)"
+        ondragover="event.preventDefault();this.classList.add('drag')"
+        ondragleave="this.classList.remove('drag')">
+        <div class="uz-icon"><i class="ti ti-camera-plus"></i></div>
+        <div class="uz-title">Ajouter des photos</div>
+        <div class="uz-sub">Cliquez ici ou glissez vos photos<br>Formats acceptés : JPG, PNG • Max 10 photos</div>
+      </div>
+      <input type="file" id="file-input" class="hidden-file" accept="image/*" multiple onchange="handleFiles(this.files)">
+      <div class="thumbs" id="thumbs"></div>
+    </div>
+
+    <!-- INFOS GÉNÉRALES -->
+    <div class="pub-step">
+      <div class="pub-step-title">🏠 Informations générales</div>
+      <div class="fg">
+        <label>Titre de l'annonce *</label>
+        <input type="text" id="p-titre" placeholder="Ex: Belle villa 3 chambres à Libreville">
+      </div>
+      <div class="row">
+        <div class="fg">
+          <label>Commune *</label>
+          <select id="p-commune">
+            <option value="">Sélectionner</option>
+            <option>Libreville</option>
+            <option>Owendo</option>
+            <option>Akanda</option>
+            <option>Ntoum</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Quartier *</label>
+          <input type="text" id="p-quartier" placeholder="Montagne Sainte">
+        </div>
+      </div>
+      <div class="row">
+        <div class="fg">
+          <label>Type de bien *</label>
+          <select id="p-type">
+            <option value="">Sélectionner</option>
+            <option>Appartement</option>
+            <option>Villa</option>
+            <option>Studio</option>
+            <option>Maison</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Loyer / mois (FCFA) *</label>
+          <input type="number" id="p-prix" placeholder="150000" min="0">
+        </div>
+      </div>
+    </div>
+
+    <!-- DETAILS -->
+    <div class="pub-step">
+      <div class="pub-step-title">📊 Détails du logement</div>
+      <div class="row">
+        <div class="fg">
+          <label>Nbre chambres *</label>
+          <select id="p-chambres">
+            <option value="">-</option>
+            <option value="1">Studio / 1</option>
+            <option value="2">2 chambres</option>
+            <option value="3">3 chambres</option>
+            <option value="4">4 chambres</option>
+            <option value="5">5+ chambres</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Salles de bain</label>
+          <input type="number" id="p-sdb" placeholder="1" min="0" max="10">
+        </div>
+      </div>
+      <div class="row">
+        <div class="fg">
+          <label>Surface (m²)</label>
+          <input type="number" id="p-surface" placeholder="80" min="0">
+        </div>
+        <div class="fg">
+          <label>Étage</label>
+          <input type="number" id="p-etage" placeholder="0 = RDC" min="0">
+        </div>
+      </div>
+      <div class="row">
+        <div class="fg">
+          <label>Parking</label>
+          <select id="p-parking">
+            <option value="true">Oui</option>
+            <option value="false">Non</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Climatisation</label>
+          <select id="p-clim">
+            <option value="true">Oui</option>
+            <option value="false">Non</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="fg">
+          <label>Cuisine</label>
+          <select id="p-cuisine">
+            <option value="équipée">Équipée</option>
+            <option value="non équipée">Non équipée</option>
+            <option value="américaine">Américaine</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Disponibilité</label>
+          <select id="p-dispo">
+            <option value="true">Disponible</option>
+            <option value="false">Indisponible</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- DESCRIPTION + CONTACT -->
+    <div class="pub-step">
+      <div class="pub-step-title">✏️ Description & Contact</div>
+      <div class="fg">
+        <label>Description du bien</label>
+        <textarea id="p-desc" placeholder="Décrivez votre bien, l'environnement, les atouts, les équipements..."></textarea>
+      </div>
+      <div class="fg">
+        <label>Téléphone de contact *</label>
+        <input type="tel" id="p-tel" placeholder="+241 07 XX XX XX">
+      </div>
+    </div>
+
+    <button class="btn btn-g" onclick="submitPub()" style="margin-top:6px">
+      <i class="ti ti-send"></i>Publier l'annonce
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     FAVORIS SCREEN
+═══════════════════════════════════ -->
+<div class="screen" id="sc-favoris">
+  <div class="std-topbar">
+    <button class="back-btn" onclick="goBack()"><i class="ti ti-arrow-left"></i></button>
+    <div class="std-topbar-title">❤️ Mes Favoris</div>
+  </div>
+  <div class="std-body" id="favoris-list"></div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PROFIL SCREEN
+═══════════════════════════════════ -->
+<div class="screen" id="sc-profil">
+  <div class="topbar">
+    <button class="ibtn" onclick="goBack()"><i class="ti ti-arrow-left"></i></button>
+    <div class="topbar-logo" style="font-size:1rem;letter-spacing:1px;font-weight:700">Mon profil</div>
+    <button class="ibtn"><i class="ti ti-edit"></i></button>
+  </div>
+  <div class="profil-body">
+    <div class="profil-hero">
+      <div class="p-avatar"><i class="ti ti-user"></i></div>
+      <div class="p-name" id="p-name">—</div>
+      <div class="p-type" id="p-type-txt">—</div>
+      <div class="p-badge" id="p-badge">KAZA</div>
+    </div>
+    <div class="p-stats">
+      <div class="pstat"><div class="pstat-val" id="stat-annonces">0</div><div class="pstat-lbl">Annonces</div></div>
+      <div class="pstat"><div class="pstat-val" id="stat-deb">0</div><div class="pstat-lbl">Débloqués</div></div>
+      <div class="pstat"><div class="pstat-val" id="stat-favs">0</div><div class="pstat-lbl">Favoris</div></div>
+    </div>
+    <div class="p-sec">Informations personnelles</div>
+    <div class="p-items">
+      <div class="p-item">
+        <div class="p-item-ico"><i class="ti ti-mail"></i></div>
+        <div>
+          <div class="p-item-lbl">Email</div>
+          <div class="p-item-sub" id="p-email-txt">—</div>
+        </div>
+      </div>
+      <div class="p-item">
+        <div class="p-item-ico"><i class="ti ti-phone"></i></div>
+        <div>
+          <div class="p-item-lbl">Téléphone</div>
+          <div class="p-item-sub" id="p-tel-txt">—</div>
+        </div>
+      </div>
+      <div class="p-item">
+        <div class="p-item-ico"><i class="ti ti-calendar"></i></div>
+        <div>
+          <div class="p-item-lbl">Date de naissance</div>
+          <div class="p-item-sub" id="p-dob-txt">—</div>
+        </div>
+      </div>
+    </div>
+    <div class="p-sec">Mon compte</div>
+    <div class="p-items">
+      <div class="p-item" onclick="goPublish()">
+        <div class="p-item-ico"><i class="ti ti-plus-circle"></i></div>
+        <div class="p-item-lbl">Publier une annonce</div>
+        <i class="ti ti-chevron-right"></i>
+      </div>
+      <div class="p-item" onclick="goScreen('favoris')">
+        <div class="p-item-ico"><i class="ti ti-heart"></i></div>
+        <div class="p-item-lbl">Mes favoris</div>
+        <i class="ti ti-chevron-right"></i>
+      </div>
+      <div class="p-item">
+        <div class="p-item-ico"><i class="ti ti-receipt-2"></i></div>
+        <div class="p-item-lbl">Historique des paiements</div>
+        <i class="ti ti-chevron-right"></i>
+      </div>
+      <div class="p-item">
+        <div class="p-item-ico"><i class="ti ti-settings"></i></div>
+        <div class="p-item-lbl">Paramètres du compte</div>
+        <i class="ti ti-chevron-right"></i>
+      </div>
+    </div>
+    <div class="p-sec">Support</div>
+    <div class="p-items">
+      <div class="p-item">
+        <div class="p-item-ico"><i class="ti ti-help-circle"></i></div>
+        <div class="p-item-lbl">Aide & FAQ</div>
+        <i class="ti ti-chevron-right"></i>
+      </div>
+      <div class="p-item">
+        <div class="p-item-ico"><i class="ti ti-info-circle"></i></div>
+        <div class="p-item-lbl">À propos de KAZA</div>
+        <i class="ti ti-chevron-right"></i>
+      </div>
+      <div class="p-items p-danger">
+        <div class="p-item" onclick="doLogout()">
+          <div class="p-item-ico"><i class="ti ti-logout"></i></div>
+          <div class="p-item-lbl">Déconnexion</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST GLOBAL -->
+<div id="toast"></div>
+
+<!-- ═══════════════════════════════════
+     JAVASCRIPT COMPLET
+═══════════════════════════════════ -->
+<script type="module">
+/* ═══════════════════════════════════════
+   DONNÉES DE DÉMONSTRATION
+   (En production → Firebase Firestore)
+═══════════════════════════════════════ */
+const DEMO_PROPS = [
+  {
+    id:1, titre:"Villa 3 chambres – Montagne Sainte",
+    commune:"Libreville", quartier:"Montagne Sainte",
+    type:"Villa", prix:150000, chambres:3, sdb:2,
+    surface:120, parking:true, clim:true, cuisine:"équipée",
+    dispo:true, verified:true, photos:4,
+    tel:"+241 07 12 34 56", bailleur:"M. Nguema Pierre",
+    desc:"Belle villa bien entretenue dans un quartier calme et sécurisé de la Montagne Sainte. Proche des commodités, transports, écoles et centres commerciaux. Cuisine entièrement équipée, jardin privatif, eau et électricité incluses.",
+    loc:"Libreville – Montagne Sainte"
+  },
+  {
+    id:2, titre:"Appartement 2 ch. – Lalala",
+    commune:"Libreville", quartier:"Lalala",
+    type:"Appartement", prix:80000, chambres:2, sdb:1,
+    surface:70, parking:false, clim:true, cuisine:"américaine",
+    dispo:true, verified:true, photos:5,
+    tel:"+241 06 98 76 54", bailleur:"Mme Obame Carine",
+    desc:"Appartement moderne et très lumineux, idéalement situé en plein cœur de Lalala. Finitions récentes, cuisine américaine ouverte, balcon avec belle vue dégagée sur la ville.",
+    loc:"Libreville – Lalala"
+  },
+  {
+    id:3, titre:"Studio meublé – Owendo Bord de mer",
+    commune:"Owendo", quartier:"Bord de mer",
+    type:"Studio", prix:45000, chambres:1, sdb:1,
+    surface:35, parking:false, clim:false, cuisine:"non équipée",
+    dispo:true, verified:false, photos:2,
+    tel:"+241 05 11 22 33", bailleur:"M. Moussavou Alain",
+    desc:"Studio fonctionnel et bien situé à Owendo, à quelques minutes de la mer. Idéal pour étudiant ou célibataire. Eau et électricité non incluses.",
+    loc:"Owendo – Bord de mer"
+  },
+  {
+    id:4, titre:"Villa de standing 4 ch. – Angondjé",
+    commune:"Akanda", quartier:"Angondjé",
+    type:"Villa", prix:280000, chambres:4, sdb:3,
+    surface:200, parking:true, clim:true, cuisine:"équipée",
+    dispo:true, verified:true, photos:8,
+    tel:"+241 07 55 66 77", bailleur:"SCI Emeraude",
+    desc:"Magnifique villa de standing dans une résidence sécurisée d'Angondjé. Piscine, jardin paysager, gardiennage 24h/24. Cuisine équipée haut de gamme, dressing, domotique. Idéale pour famille.",
+    loc:"Akanda – Angondjé"
+  },
+  {
+    id:5, titre:"Maison 2 chambres – Centre Ntoum",
+    commune:"Ntoum", quartier:"Centre",
+    type:"Maison", prix:55000, chambres:2, sdb:1,
+    surface:80, parking:true, clim:false, cuisine:"non équipée",
+    dispo:true, verified:true, photos:3,
+    tel:"+241 06 33 44 55", bailleur:"M. Bekale Jonas",
+    desc:"Maison simple et propre, bien entretenue, située en plein centre de Ntoum. Proche du marché, des transports et de toutes commodités. Cour extérieure avec espace de stationnement.",
+    loc:"Ntoum – Centre"
+  },
+  {
+    id:6, titre:"Grand appartement 3 ch. – Glass",
+    commune:"Libreville", quartier:"Glass",
+    type:"Appartement", prix:120000, chambres:3, sdb:2,
+    surface:100, parking:true, clim:true, cuisine:"équipée",
+    dispo:true, verified:true, photos:6,
+    tel:"+241 07 77 88 99", bailleur:"Agence Immo KAZA",
+    desc:"Superbe appartement entièrement rénové au quartier Glass, au cœur du centre-ville. Tout équipé, sécurisé 24h/24 avec vigile, vue sur mer partielle depuis le balcon.",
+    loc:"Libreville – Glass"
+  },
+  {
+    id:7, titre:"Appartement 2 ch. – Nzeng-Ayong",
+    commune:"Libreville", quartier:"Nzeng-Ayong",
+    type:"Appartement", prix:65000, chambres:2, sdb:1,
+    surface:60, parking:false, clim:true, cuisine:"non équipée",
+    dispo:true, verified:false, photos:3,
+    tel:"+241 06 44 55 66", bailleur:"M. Ondo Sylvain",
+    desc:"Appartement bien situé dans une résidence calme de Nzeng-Ayong. Accès facile aux transports en commun. Idéal pour jeune couple ou famille.",
+    loc:"Libreville – Nzeng-Ayong"
+  },
+  {
+    id:8, titre:"Villa 5 chambres – Owendo PK8",
+    commune:"Owendo", quartier:"PK8",
+    type:"Villa", prix:180000, chambres:5, sdb:3,
+    surface:160, parking:true, clim:true, cuisine:"équipée",
+    dispo:false, verified:true, photos:7,
+    tel:"+241 07 99 00 11", bailleur:"M. Nze Robert",
+    desc:"Grande villa familiale très spacieuse au PK8, Owendo. 5 chambres dont une suite parentale, cuisine entièrement équipée, grand salon-séjour, terrasse ombragée. Actuellement indisponible.",
+    loc:"Owendo – PK8"
+  }
+];
+
+/* ═══════════════════════════════════════
+   ÉTAT APPLICATION
+═══════════════════════════════════════ */
+let STATE = {
+  user: null,
+  statut: 'chercheur',
+  commune: '',
+  currentProp: null,
+  prevScreen: 'home',
+  favorites: [],
+  unlockedContacts: [],
+  photoFiles: [],
+  myProps: [],
+  searchOpen: false,
+  payments: 0,
+};
+
+/* ═══════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════ */
+function goScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('sc-' + id).classList.add('active');
+}
+function goBack() {
+  goScreen(STATE.prevScreen);
+}
+
+/* ═══════════════════════════════════════
+   SPLASH → AUTH après 2.2s
+═══════════════════════════════════════ */
+setTimeout(() => goScreen('auth'), 2200);
+
+/* ═══════════════════════════════════════
+   AUTH
+═══════════════════════════════════════ */
+function switchTab(t) {
+  document.getElementById('tab-reg').classList.toggle('active', t === 'reg');
+  document.getElementById('tab-login').classList.toggle('active', t === 'login');
+  document.getElementById('form-reg').style.display = t === 'reg' ? 'block' : 'none';
+  document.getElementById('form-login').style.display = t === 'login' ? 'block' : 'none';
+}
+
+function setStatut(s) {
+  STATE.statut = s;
+  document.getElementById('btn-chercheur').classList.toggle('active', s === 'chercheur');
+  document.getElementById('btn-bailleur').classList.toggle('active', s === 'bailleur');
+}
+
+/* ═══════════════════════════════════════
+   SIDEBAR
+═══════════════════════════════════════ */
+function openSB() {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sb-overlay').classList.add('open');
+}
+function closeSB() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sb-overlay').classList.remove('open');
+}
+
+/* ═══════════════════════════════════════
+   SEARCH
+═══════════════════════════════════════ */
+function toggleSearch() {
+  STATE.searchOpen = !STATE.searchOpen;
+  const bar = document.getElementById('search-bar');
+  bar.style.display = STATE.searchOpen ? 'block' : 'none';
+  if (STATE.searchOpen) document.getElementById('search-input').focus();
+}
+function searchProps(v) {
+  const q = v.toLowerCase();
+  if (!q) { renderProps(DEMO_PROPS); return; }
+  const list = DEMO_PROPS.filter(p =>
+    p.titre.toLowerCase().includes(q) ||
+    p.commune.toLowerCase().includes(q) ||
+    p.quartier.toLowerCase().includes(q) ||
+    p.type.toLowerCase().includes(q)
+  );
+  renderProps(list);
+}
+
+/* ═══════════════════════════════════════
+   FILTRES
+═══════════════════════════════════════ */
+function fCommune(el, val) {
+  document.querySelectorAll('#commune-chips .chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  STATE.commune = val;
+  applyFilters();
+}
+function applyFilters() {
+  const q  = document.getElementById('f-quartier').value;
+  const ch = document.getElementById('f-chambres').value;
+  const ty = document.getElementById('f-type').value;
+  let list = DEMO_PROPS;
+  if (STATE.commune) list = list.filter(p => p.commune === STATE.commune);
+  if (q)  list = list.filter(p => p.quartier === q);
+  if (ch) list = list.filter(p => parseInt(ch) >= 4 ? p.chambres >= 4 : p.chambres === parseInt(ch));
+  if (ty) list = list.filter(p => p.type === ty);
+  renderProps(list);
+}
+
+/* ═══════════════════════════════════════
+   RENDU LISTINGS
+═══════════════════════════════════════ */
+function fmt(n) {
+  return n.toLocaleString('fr-FR');
+}
+function renderProps(list) {
+  const el = document.getElementById('props-list');
+  document.getElementById('props-count').textContent = list.length + ' bien(s)';
+
+  if (!list.length) {
+    el.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon"><i class="ti ti-building-off"></i></div>
+        <div class="empty-title">Aucun bien trouvé</div>
+        <div class="empty-sub">Essayez de modifier vos filtres de recherche</div>
+      </div>`;
+    return;
+  }
+
+  el.innerHTML = list.map(p => {
+    const isFav = STATE.favorites.includes(p.id);
+    return `
+    <div class="pcard" onclick="showDetail(${p.id})">
+      <div class="pcard-img">
+        <div class="pcard-img-ph"><i class="ti ti-home-2"></i></div>
+        ${p.verified ? '<div class="v-badge"><i class="ti ti-circle-check"></i> Vérifié KAZA</div>' : ''}
+        <div class="photo-ct"><i class="ti ti-camera"></i> ${p.photos}</div>
+        <button class="fav-btn-card ${isFav ? 'active' : ''}"
+          onclick="event.stopPropagation();toggleFavCard(${p.id}, this)"
+          title="Ajouter aux favoris">
+          <i class="ti ti-heart${isFav ? '-filled' : ''}"></i>
+        </button>
+        ${!p.dispo ? '<div style="position:absolute;bottom:10px;left:10px;background:rgba(229,57,53,.85);color:#fff;font-size:.62rem;font-weight:700;padding:3px 10px;border-radius:20px;backdrop-filter:blur(4px)">Indisponible</div>' : ''}
+      </div>
+      <div class="pcard-body">
+        <div class="pcard-price">${fmt(p.prix)} FCFA <span>/ mois</span></div>
+        <div class="pcard-title">${p.titre}</div>
+        <div class="pcard-loc"><i class="ti ti-map-pin"></i>${p.loc}</div>
+        <div class="pcard-feats">
+          <div class="pf"><i class="ti ti-bed"></i>${p.chambres} ch.</div>
+          <div class="pf"><i class="ti ti-bath"></i>${p.sdb} sdb</div>
+          <div class="pf"><i class="ti ti-resize"></i>${p.surface} m²</div>
+          ${p.parking ? '<div class="pf"><i class="ti ti-car"></i>Parking</div>' : ''}
+          ${p.clim ? '<div class="pf"><i class="ti ti-air-conditioning"></i>Clim</div>' : ''}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ═══════════════════════════════════════
+   FAVORIS
+═══════════════════════════════════════ */
+function toggleFavCard(id, btn) {
+  const idx = STATE.favorites.indexOf(id);
+  const icon = btn.querySelector('i');
+  if (idx === -1) {
+    STATE.favorites.push(id);
+    btn.classList.add('active');
+    icon.className = 'ti ti-heart-filled';
+    showToast('❤️ Ajouté aux favoris');
+  } else {
+    STATE.favorites.splice(idx, 1);
+    btn.classList.remove('active');
+    icon.className = 'ti ti-heart';
+    showToast('💔 Retiré des favoris');
+  }
+  document.getElementById('sb-fav-count').textContent = STATE.favorites.length;
+  document.getElementById('stat-favs').textContent = STATE.favorites.length;
+}
+
+function toggleFavDetail() {
+  if (!STATE.currentProp) return;
+  const id = STATE.currentProp.id;
+  const btn = document.getElementById('d-fav-btn');
+  const icon = btn.querySelector('i');
+  const idx = STATE.favorites.indexOf(id);
+  if (idx === -1) {
+    STATE.favorites.push(id);
+    icon.className = 'ti ti-heart-filled';
+    icon.style.color = '#f5c518';
+    showToast('❤️ Ajouté aux favoris');
+  } else {
+    STATE.favorites.splice(idx, 1);
+    icon.className = 'ti ti-heart';
+    icon.style.color = '#fff';
+    showToast('💔 Retiré des favoris');
+  }
+  document.getElementById('sb-fav-count').textContent = STATE.favorites.length;
+  document.getElementById('stat-favs').textContent = STATE.favorites.length;
+}
+
+function renderFavoris() {
+  const el = document.getElementById('favoris-list');
+  const list = DEMO_PROPS.filter(p => STATE.favorites.includes(p.id));
+  if (!list.length) {
+    el.innerHTML = `
+      <div class="empty-state" style="padding-top:60px">
+        <div class="empty-icon"><i class="ti ti-heart-off"></i></div>
+        <div class="empty-title">Aucun favori pour l'instant</div>
+        <div class="empty-sub">Appuyez sur ❤️ sur un bien pour l'ajouter à vos favoris</div>
+      </div>`;
+    return;
+  }
+  el.innerHTML = '<div style="padding:14px 12px 0">' + list.map(p => `
+    <div class="pcard" onclick="STATE.prevScreen='favoris';showDetail(${p.id})">
+      <div class="pcard-img">
+        <div class="pcard-img-ph"><i class="ti ti-home-2"></i></div>
+        ${p.verified ? '<div class="v-badge"><i class="ti ti-circle-check"></i> Vérifié</div>' : ''}
+      </div>
+      <div class="pcard-body">
+        <div class="pcard-price">${fmt(p.prix)} FCFA <span>/ mois</span></div>
+        <div class="pcard-title">${p.titre}</div>
+        <div class="pcard-loc"><i class="ti ti-map-pin"></i>${p.loc}</div>
+      </div>
+    </div>`).join('') + '</div>';
+}
+
+/* ═══════════════════════════════════════
+   DETAIL
+═══════════════════════════════════════ */
+function showDetail(id) {
+  const p = [...DEMO_PROPS, ...STATE.myProps].find(x => x.id === id);
+  if (!p) return;
+  STATE.currentProp = p;
+  STATE.prevScreen  = 'home';
+
+  document.getElementById('d-topbar-title').textContent = p.titre;
+  document.getElementById('d-price').innerHTML = fmt(p.prix) + ' FCFA <span>/ mois</span>';
+  document.getElementById('d-name').textContent = p.type + ' — ' + p.quartier;
+  document.getElementById('d-loc').textContent   = p.commune + ', ' + p.quartier;
+  document.getElementById('d-desc').textContent  = p.desc;
+
+  const vb = document.getElementById('d-vbadge');
+  vb.style.display = p.verified ? 'flex' : 'none';
+
+  const fav = STATE.favorites.includes(id);
+  const favIcon = document.getElementById('d-fav-btn').querySelector('i');
+  favIcon.className = fav ? 'ti ti-heart-filled' : 'ti ti-heart';
+  favIcon.style.color = fav ? '#f5c518' : '#fff';
+
+  document.getElementById('d-feats').innerHTML = `
+    <div class="fi"><i class="ti ti-bed"></i><div><div class="fi-lbl">Chambres</div><div class="fi-val">${p.chambres}</div></div></div>
+    <div class="fi"><i class="ti ti-bath"></i><div><div class="fi-lbl">Salles de bain</div><div class="fi-val">${p.sdb}</div></div></div>
+    <div class="fi"><i class="ti ti-resize"></i><div><div class="fi-lbl">Surface</div><div class="fi-val">${p.surface} m²</div></div></div>
+    <div class="fi"><i class="ti ti-car"></i><div><div class="fi-lbl">Parking</div><div class="fi-val">${p.parking ? 'Oui' : 'Non'}</div></div></div>
+    <div class="fi"><i class="ti ti-air-conditioning"></i><div><div class="fi-lbl">Climatisation</div><div class="fi-val">${p.clim ? 'Oui' : 'Non'}</div></div></div>
+    <div class="fi"><i class="ti ti-tools-kitchen-2"></i><div><div class="fi-lbl">Cuisine</div><div class="fi-val">${p.cuisine || '—'}</div></div></div>
+    <div class="fi"><i class="ti ti-calendar-check"></i><div><div class="fi-lbl">Disponibilité</div><div class="fi-val">${p.dispo ? 'Disponible' : 'Indisponible'}</div></div></div>
+    <div class="fi"><i class="ti ti-home-2"></i><div><div class="fi-lbl">Type</div><div class="fi-val">${p.type}</div></div></div>
+  `;
+
+  renderContactBox(p);
+  goScreen('detail');
+}
+
+function renderContactBox(p) {
+  const box = document.getElementById('d-contact');
+  const unlocked = STATE.unlockedContacts.includes(p.id);
+
+  if (!p.verified) {
+    box.innerHTML = `
+      <div class="cbox" style="background:linear-gradient(135deg,#37474f,#546e7a)">
+        <div class="cbox-icon"><i class="ti ti-alert-circle"></i></div>
+        <div class="cbox-title">Bien non vérifié</div>
+        <div class="cbox-sub">Ce logement n'a pas encore été certifié par l'équipe KAZA. Contactez le bailleur avec prudence.</div>
+      </div>`;
+    return;
+  }
+
+  if (unlocked) {
+    box.innerHTML = `
+      <div class="cbox">
+        <div class="cbox-icon"><i class="ti ti-circle-check"></i></div>
+        <div class="cbox-title">Contact débloqué !</div>
+        <div class="cbox-unlocked">
+          <div class="c-tel"><i class="ti ti-phone"></i>${p.tel}</div>
+          <div class="c-who">${p.bailleur || 'Bailleur certifié KAZA'}</div>
+        </div>
+        <div class="c-actions">
+          <button class="c-act-btn"><i class="ti ti-phone-call"></i>Appeler</button>
+          <button class="c-act-btn"><i class="ti ti-brand-whatsapp"></i>WhatsApp</button>
+          <button class="c-act-btn"><i class="ti ti-message-circle"></i>SMS</button>
+        </div>
+      </div>`;
+  } else {
+    box.innerHTML = `
+      <div class="cbox">
+        <div class="cbox-icon"><i class="ti ti-lock"></i></div>
+        <div class="cbox-title">Contact verrouillé</div>
+        <div class="cbox-sub">Ce bien est <strong>certifié KAZA</strong>.<br>Débloquez le contact du bailleur pour seulement <strong>500 FCFA</strong>.</div>
+        <button class="unlock-btn" onclick="openPayD()">
+          <i class="ti ti-lock-open"></i>Débloquer — 500 FCFA
+        </button>
+      </div>`;
+  }
+}
+
+/* ═══════════════════════════════════════
+   PAIEMENT
+═══════════════════════════════════════ */
+function selPay(el) {
+  el.closest('.pay-opts').querySelectorAll('.pay-opt').forEach(o => o.classList.remove('sel'));
+  el.classList.add('sel');
+}
+function openPayD()  { document.getElementById('pay-modal-d').classList.add('open'); }
+function closePayD() { document.getElementById('pay-modal-d').classList.remove('open'); }
+function closePayModal() { document.getElementById('pay-modal').classList.remove('open'); }
+
+}
+
+/* ═══════════════════════════════════════
+   PUBLISH
+═══════════════════════════════════════ */
+function goPublish() {
+  closeSB();
+  STATE.prevScreen = 'home';
+  goScreen('publish');
+}
+
+function handleFiles(files) {
+  const arr = Array.from(files).slice(0, 10 - STATE.photoFiles.length);
+  arr.forEach(f => {
+    STATE.photoFiles.push(f);
+    const reader = new FileReader();
+    reader.onload = e => {
+      const div = document.createElement('div');
+      div.className = 'thumb';
+      div.innerHTML = `<img src="${e.target.result}"><div class="thumb-del" onclick="delThumb(this)">×</div>`;
+      document.getElementById('thumbs').appendChild(div);
+    };
+    reader.readAsDataURL(f);
+  });
+}
+function handleDrop(e) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag');
+  handleFiles(e.dataTransfer.files);
+}
+function delThumb(el) {
+  const idx = Array.from(document.getElementById('thumbs').children).indexOf(el.parentElement);
+  STATE.photoFiles.splice(idx, 1);
+  el.parentElement.remove();
+}
+
+   NAV BOTTOM
+═══════════════════════════════════════ */
+function setNav(id) {
+  document.querySelectorAll('.ni').forEach(n => n.classList.remove('active'));
+  const el = document.getElementById('ni-' + id);
+  if (el) el.classList.add('active');
+  if (id === 'favoris') renderFavoris();
+}
+
+/* ═══════════════════════════════════════
+   TOAST
+═══════════════════════════════════════ */
+let toastTimer = null;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+/* ═══════════════════════════════════════
+   UTILITAIRES
+═══════════════════════════════════════ */
+function formatDate(str) {
+  if (!str) return '—';
+  const [y, m, d] = str.split('-');
+  return d + '/' + m + '/' + y;
+}
+
+/* ═══════════════════════════════════════
+   SERVICE WORKER (PWA)
+═══════════════════════════════════════ */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
+
+/* ═══════════════════════════════════════
+
+/* ═══════════════════════════════════════
+   FIREBASE — INTÉGRATION COMPLÈTE KAZA
+═══════════════════════════════════════ */
+
+/* ── INITIALISATION ── */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-analytics.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, getDocs, doc, setDoc, getDoc, query, where, orderBy } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-storage.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAhw7-KhRheFsriPqmJHr3oVlYYkNmQwbM",
+  authDomain: "kaza-app-d0ecc.firebaseapp.com",
+  projectId: "kaza-app-d0ecc",
+  storageBucket: "kaza-app-d0ecc.firebasestorage.app",
+  messagingSenderId: "589510622848",
+  appId: "1:589510622848:web:9808ee25b6b073f0557065",
+  measurementId: "G-JRBDMHSYFT"
+};
+
+const firebaseApp = initializeApp(firebaseConfig);
+const analytics   = getAnalytics(firebaseApp);
+const auth        = getAuth(firebaseApp);
+const db          = getFirestore(firebaseApp);
+const storage     = getStorage(firebaseApp);
+
+/* ── ENTRER DANS L'APP ── */
+function enterHome() {
+  const { prenom, nom, email, tel, statut, dob } = STATE.user;
+  const fullName = (prenom + ' ' + nom).trim() || 'Utilisateur';
+  document.getElementById('sb-name').textContent = fullName;
+  document.getElementById('sb-type').textContent = statut === 'bailleur' ? 'Bailleur' : 'Chercheur';
+  document.getElementById('sb-badge-type').textContent = statut === 'bailleur' ? 'BAILLEUR' : 'KAZA';
+  document.getElementById('p-name').textContent = fullName;
+  document.getElementById('p-type-txt').textContent = statut === 'bailleur' ? 'Bailleur de logements' : 'Chercheur de logement';
+  document.getElementById('p-badge').textContent = statut === 'bailleur' ? '🏠 BAILLEUR KAZA' : '🔍 CHERCHEUR';
+  document.getElementById('p-email-txt').textContent = email || '—';
+  document.getElementById('p-tel-txt').textContent = tel || '—';
+  document.getElementById('p-dob-txt').textContent = dob ? formatDate(dob) : '—';
+  goScreen('home');
+  loadLogements();
+}
+
+/* ── INSCRIPTION FIREBASE ── */
+async function doRegister() {
+  const prenom  = document.getElementById('r-prenom').value.trim();
+  const nom     = document.getElementById('r-nom').value.trim();
+  const email   = document.getElementById('r-email').value.trim();
+  const tel     = document.getElementById('r-tel').value.trim();
+  const pass    = document.getElementById('r-pass').value;
+  const dob     = document.getElementById('r-dob').value;
+  const sexe    = document.getElementById('r-sexe').value;
+
+  if (!prenom || !nom || !email || !tel) { showToast('⚠️ Remplissez tous les champs obligatoires'); return; }
+  if (pass.length < 6) { showToast('⚠️ Mot de passe trop court (6 caractères min.)'); return; }
+
+  try {
+    showToast('⏳ Création du compte...');
+    const cred = await createUserWithEmailAndPassword(auth, email, pass);
+    const userData = { prenom, nom, email, tel, dob, sexe, statut: STATE.statut, createdAt: new Date().toISOString() };
+    await setDoc(doc(db, 'utilisateurs', cred.user.uid), userData);
+    STATE.user = { uid: cred.user.uid, ...userData };
+    enterHome();
+    showToast('✅ Bienvenue sur KAZA, ' + prenom + ' !');
+  } catch(e) {
+    if (e.code === 'auth/email-already-in-use') showToast('⚠️ Cet email est déjà utilisé');
+    else if (e.code === 'auth/invalid-email') showToast('⚠️ Email invalide');
+    else showToast('❌ Erreur : ' + e.message);
+  }
+}
+
+/* ── CONNEXION FIREBASE ── */
+async function doLogin() {
+  const email = document.getElementById('l-email').value.trim();
+  const pass  = document.getElementById('l-pass').value;
+  if (!email || !pass) { showToast('⚠️ Entrez vos identifiants'); return; }
+
+  try {
+    showToast('⏳ Connexion...');
+    const cred = await signInWithEmailAndPassword(auth, email, pass);
+    const snap = await getDoc(doc(db, 'utilisateurs', cred.user.uid));
+    if (snap.exists()) {
+      STATE.user = { uid: cred.user.uid, ...snap.data() };
+    } else {
+      STATE.user = { uid: cred.user.uid, prenom: '', nom: '', email, tel: '', statut: 'chercheur' };
+    }
+    enterHome();
+    showToast('✅ Connexion réussie !');
+  } catch(e) {
+    if (e.code === 'auth/wrong-password' || e.code === 'auth/invalid-credential') showToast('⚠️ Email ou mot de passe incorrect');
+    else if (e.code === 'auth/user-not-found') showToast('⚠️ Aucun compte avec cet email');
+    else showToast('❌ Erreur : ' + e.message);
+  }
+}
+
+/* ── DÉCONNEXION FIREBASE ── */
+async function doLogout() {
+  closeSB();
+  await signOut(auth);
+  STATE.user = null;
+  STATE.favorites = [];
+  STATE.unlockedContacts = [];
+  goScreen('auth');
+  showToast('👋 À bientôt sur KAZA !');
+}
+
+/* ── CHARGER LES LOGEMENTS DEPUIS FIRESTORE ── */
+async function loadLogements() {
+  try {
+    showToast('⏳ Chargement des annonces...');
+    const snap = await getDocs(query(collection(db, 'logements'), orderBy('createdAt', 'desc')));
+    const list = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    if (list.length > 0) {
+      renderProps(list);
+      document.getElementById('props-count').textContent = list.length + ' bien(s)';
+    } else {
+      renderProps(DEMO_PROPS); /* Affiche les démos si Firestore est vide */
+    }
+  } catch(e) {
+    renderProps(DEMO_PROPS); /* Fallback sur démos si erreur */
+    console.log('Firestore:', e.message);
+  }
+}
+
+/* ── PUBLIER UNE ANNONCE AVEC PHOTOS ── */
+async function submitPub() {
+  const titre    = document.getElementById('p-titre').value.trim();
+  const commune  = document.getElementById('p-commune').value;
+  const prix     = document.getElementById('p-prix').value;
+  const type     = document.getElementById('p-type').value;
+  const chambres = document.getElementById('p-chambres').value;
+  const tel      = document.getElementById('p-tel').value.trim();
+
+  if (!titre || !commune || !prix || !type || !chambres || !tel) {
+    showToast('⚠️ Remplissez tous les champs obligatoires *');
+    return;
+  }
+
+  try {
+    showToast('⏳ Publication en cours...');
+
+    /* Upload des photos sur Firebase Storage */
+    let photoURLs = [];
+    if (STATE.photoFiles.length > 0) {
+      showToast('⏳ Upload des photos...');
+      photoURLs = await Promise.all(STATE.photoFiles.map(async (file) => {
+        const storageRef = ref(storage, 'logements/' + Date.now() + '_' + file.name);
+        await uploadBytes(storageRef, file);
+        return getDownloadURL(storageRef);
+      }));
+    }
+
+    /* Enregistrement dans Firestore */
+    const newP = {
+      titre, commune,
+      quartier:    document.getElementById('p-quartier').value || 'Centre',
+      type,
+      prix:        parseInt(prix),
+      chambres:    parseInt(chambres),
+      sdb:         parseInt(document.getElementById('p-sdb').value) || 1,
+      surface:     parseInt(document.getElementById('p-surface').value) || 0,
+      parking:     document.getElementById('p-parking').value === 'true',
+      clim:        document.getElementById('p-clim').value === 'true',
+      cuisine:     document.getElementById('p-cuisine').value,
+      dispo:       document.getElementById('p-dispo').value === 'true',
+      desc:        document.getElementById('p-desc').value || '',
+      tel,
+      bailleur:    STATE.user ? STATE.user.prenom + ' ' + STATE.user.nom : 'Bailleur',
+      uid_bailleur: STATE.user ? STATE.user.uid : null,
+      photos:      photoURLs,
+      nbPhotos:    photoURLs.length,
+      verified:    false,
+      loc:         commune + ' – ' + (document.getElementById('p-quartier').value || 'Centre'),
+      createdAt:   new Date().toISOString(),
+    };
+
+    await addDoc(collection(db, 'logements'), newP);
+
+    STATE.photoFiles = [];
+    document.getElementById('thumbs').innerHTML = '';
+    showToast('✅ Annonce publiée avec succès !');
+    setTimeout(() => { goBack(); loadLogements(); }, 900);
+
+  } catch(e) {
+    showToast('❌ Erreur publication : ' + e.message);
+  }
+}
+
+/* ── ENREGISTRER UN PAIEMENT ── */
+async function confirmPayDetail() {
+  closePayD();
+  if (!STATE.currentProp) return;
+  try {
+    if (STATE.user) {
+      await addDoc(collection(db, 'paiements'), {
+        id_utilisateur:  STATE.user.uid,
+        id_logement:     STATE.currentProp.id,
+        mode_paiement:   document.querySelector('.pay-opt.sel .pay-name')?.textContent || 'Airtel Money',
+        montant:         500,
+        date_paiement:   new Date().toISOString(),
+        statut:          'confirme'
+      });
+    }
+    STATE.unlockedContacts.push(STATE.currentProp.id);
+    STATE.payments++;
+    document.getElementById('stat-deb').textContent = STATE.unlockedContacts.length;
+    renderContactBox(STATE.currentProp);
+    showToast('🔓 Contact débloqué avec succès !');
+  } catch(e) {
+    /* Même si erreur Firestore, on débloque quand même côté UI */
+    STATE.unlockedContacts.push(STATE.currentProp.id);
+    renderContactBox(STATE.currentProp);
+    showToast('🔓 Contact débloqué !');
+  }
+}
+
+/* ── VÉRIFICATION AUTH AU DÉMARRAGE ── */
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    try {
+      const snap = await getDoc(doc(db, 'utilisateurs', user.uid));
+      STATE.user = snap.exists() ? { uid: user.uid, ...snap.data() } : { uid: user.uid, prenom: '', nom: '', email: user.email, tel: '', statut: 'chercheur' };
+      enterHome();
+    } catch(e) {
+      goScreen('auth');
+    }
+  }
+});
+
+</script>
+</body>
+</html>
